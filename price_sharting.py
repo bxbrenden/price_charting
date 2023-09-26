@@ -71,9 +71,13 @@ def results_to_dataframe(results: Dict[str, Dict[str, float]]) -> pd.DataFrame:
 
 def pokemon_prices_to_excel(pokemon_prices: pd.DataFrame):
     date_time_stamp = datetime.today().isoformat(sep="-", timespec="seconds")
-    pokemon_prices.to_excel(
-        f"Pokemon-Prices-{date_time_stamp}.xlsx", sheet_name="Prices"
-    )
+    writer = pd.ExcelWriter(f"Pokemon-Prices-{date_time_stamp}.xlsx", engine="xlsxwriter")
+    pokemon_prices.to_excel(writer, sheet_name='Prices')
+    wb = writer.book
+    ws = writer.sheets['Prices']
+    money_fmt = wb.add_format({'num_format': '$#,##0.00'})
+    ws.set_column('B:G', 12, money_fmt)
+    writer.close()
 
 
 def main():
