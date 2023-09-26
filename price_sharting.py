@@ -66,6 +66,7 @@ def results_to_dataframe(results: Dict[str, Dict[str, float]]) -> pd.DataFrame:
         all_series.append(s)
 
     df = pd.DataFrame(data=all_series)
+    df.index.name = 'Pokemon'
     return df
 
 
@@ -77,6 +78,7 @@ def pokemon_prices_to_excel(pokemon_prices: pd.DataFrame):
     ws = writer.sheets['Prices']
     money_fmt = wb.add_format({'num_format': '$#,##0.00'})
     ws.set_column('B:G', 12, money_fmt)
+    ws.set_column('A:A', max([len(name) for name in pokemon_prices.index]))
     writer.close()
 
 
