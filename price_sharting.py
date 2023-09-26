@@ -29,17 +29,17 @@ def get_url(url: str):
 
 def get_prices(html: str):
     results = dict()
-    fields = [
-        "used_price",
-        "complete_price",
-        "new_price",
-        "graded_price",
-        "box_only_price",
-        "manual_only_price",
-    ]
+    fields = {
+        "used_price": "Ungraded",
+        "complete_price": "Grade 7",
+        "new_price": "Grade 8",
+        "graded_price": "Grade 9",
+        "box_only_price": "Grade 9.5",
+        "manual_only_price": "Grade 10",
+    }
 
     soup = BeautifulSoup(html, features="html.parser")
-    for field in fields:
+    for field, grade_level in fields.items():
         if val := soup.find("td", {"id": field}):
             children = val.findChildren("span", {"class": "price"}, recursive=False)
             if not children:
@@ -51,7 +51,7 @@ def get_prices(html: str):
                         price = float(price_str)
                     except ValueError:
                         raise SystemExit(f'Could not turn value "{price_str}"')
-                    results[field] = price
+                    results[grade_level] = price
 
     return results
 
