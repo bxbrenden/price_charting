@@ -1,4 +1,5 @@
 *.txt
+*.xlsx*
 *.yml
 *.yaml
 **/__pycache__/

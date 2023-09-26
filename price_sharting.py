@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict
 
 from bs4 import BeautifulSoup
@@ -68,6 +69,13 @@ def results_to_dataframe(results: Dict[str, Dict[str, float]]) -> pd.DataFrame:
     return df
 
 
+def pokemon_prices_to_excel(pokemon_prices: pd.DataFrame):
+    date_time_stamp = datetime.today().isoformat(sep="-", timespec="seconds")
+    pokemon_prices.to_excel(
+        f"Pokemon-Prices-{date_time_stamp}.xlsx", sheet_name="Prices"
+    )
+
+
 def main():
     url_data = get_url_data()
     prices = dict()
@@ -80,6 +88,7 @@ def main():
 
     pokemon_prices = results_to_dataframe(prices)
     print(pokemon_prices)
+    pokemon_prices_to_excel(pokemon_prices)
 
 
 if __name__ == "__main__":
