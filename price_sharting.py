@@ -1,4 +1,7 @@
+from typing import Dict
+
 from bs4 import BeautifulSoup
+import pandas as pd
 import requests
 from requests.exceptions import RequestException
 import yaml
@@ -53,6 +56,18 @@ def get_prices(html: str):
     return results
 
 
+def results_to_dataframe(results: Dict[str, Dict[str, float]]) -> pd.DataFrame:
+    all_series = []
+    for pokemon in results.keys():
+        index = results[pokemon].keys()
+        values = results[pokemon].values()
+        s = pd.Series(data=values, index=index, name=pokemon, dtype="float64")
+        all_series.append(s)
+
+    df = pd.DataFrame(data=all_series)
+    return df
+
+
 def main():
     url_data = get_url_data()
     prices = dict()
@@ -61,10 +76,10 @@ def main():
         url = url_data[pokemon]
         html = get_url(url)
         price = get_prices(html)
-        # print(price)
         prices[pokemon] = price
 
-    print(prices)
+    pokemon_prices = results_to_dataframe(prices)
+    print(pokemon_prices)
 
 
 if __name__ == "__main__":

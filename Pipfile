@@ -11,6 +11,8 @@ flake8 = "*"
 black = "*"
 pyyaml = "*"
 yamllint = "*"
+pandas = "*"
+numpy = "*"
 
 [dev-packages]
 
