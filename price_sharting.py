@@ -1,14 +1,14 @@
-from collections import defaultdict
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import RequestException
+import yaml
 
 
-def get_urls_list(filename: str = "urls.txt"):
+def get_url_data(filename: str = "urls.yaml"):
     try:
         with open(filename, "r") as files:
-            urls = files.read().strip().split("\n")
-            return urls
+            url_data = yaml.safe_load(files)
+            return url_data
     except FileNotFoundError:
         raise SystemExit(f'URLs list "{filename}" does not exist')
     except PermissionError:
@@ -25,7 +25,7 @@ def get_url(url: str):
 
 
 def get_prices(html: str):
-    results = defaultdict()
+    results = dict()
     fields = [
         "used_price",
         "complete_price",
@@ -54,13 +54,17 @@ def get_prices(html: str):
 
 
 def main():
-    urls = get_urls_list()
-    print("\n".join(urls))
+    url_data = get_url_data()
+    prices = dict()
 
-    for url in urls[:1]:
+    for pokemon in url_data.keys():
+        url = url_data[pokemon]
         html = get_url(url)
-        prices = get_prices(html)
-        print(prices)
+        price = get_prices(html)
+        # print(price)
+        prices[pokemon] = price
+
+    print(prices)
 
 
 if __name__ == "__main__":

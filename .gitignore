@@ -1,2 +1,4 @@
 *.txt
+*.yml
+*.yaml
 **/__pycache__/

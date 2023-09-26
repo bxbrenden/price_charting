@@ -9,6 +9,8 @@ beautifulsoup4 = "*"
 ipython = "*"
 flake8 = "*"
 black = "*"
+pyyaml = "*"
+yamllint = "*"
 
 [dev-packages]
 
