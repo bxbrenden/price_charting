@@ -37,8 +37,18 @@ def get_prices(html: str):
 
     soup = BeautifulSoup(html, features="html.parser")
     for field in fields:
-        if val := soup.find(id=field):
-            results[field] = val
+        if val := soup.find("td", {"id": field}):
+            children = val.findChildren("span", {"class": "price"}, recursive=False)
+            if not children:
+                raise SystemExit("No child elements found")
+            else:
+                for child in children:
+                    price_str = child.text.strip().replace("$", "").replace(" ", "")
+                    try:
+                        price = float(price_str)
+                    except ValueError:
+                        raise SystemExit(f'Could not turn value "{price_str}"')
+                    results[field] = price
 
     return results
 
@@ -49,7 +59,6 @@ def main():
 
     for url in urls[:1]:
         html = get_url(url)
-        # print(soup.prettify())
         prices = get_prices(html)
         print(prices)
 
