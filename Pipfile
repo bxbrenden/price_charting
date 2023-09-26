@@ -8,6 +8,7 @@ requests = "*"
 beautifulsoup4 = "*"
 ipython = "*"
 flake8 = "*"
+black = "*"
 
 [dev-packages]
 
