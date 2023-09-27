@@ -77,6 +77,15 @@ def pokemon_prices_to_excel(pokemon_prices: pd.DataFrame):
     wb = writer.book
     ws = writer.sheets['Prices']
     money_fmt = wb.add_format({'num_format': '$#,##0.00'})
+    label_fmt = wb.add_format({'border': 2, 'bold': True})
+    label_fmt.set_align('vcenter')
+    label_fmt.set_align('center')
+    columns = pokemon_prices.columns
+    letters = list('BCDEFG')
+    ws.write('A1', 'Pokemon', label_fmt)
+    for index, column in enumerate(columns):
+        coords = f'{letters[index]}1'
+        ws.write(coords, column, label_fmt)
     ws.set_column('B:G', 12, money_fmt)
     ws.set_column('A:A', max([len(name) for name in pokemon_prices.index]))
     writer.close()
