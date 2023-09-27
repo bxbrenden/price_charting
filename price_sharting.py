@@ -47,11 +47,19 @@ def get_prices(html: str):
                 raise SystemExit("No child elements found")
             else:
                 for child in children:
-                    price_str = child.text.strip().replace("$", "").replace(" ", "")
+                    price_str = (
+                        child.text.strip()
+                        .replace("$", "")
+                        .replace(" ", "")
+                        .replace(",", "")
+                    )
                     try:
                         price = float(price_str)
                     except ValueError:
-                        raise SystemExit(f'Could not turn value "{price_str}"')
+                        if price_str == "N/A":
+                            price = 0.0
+                        else:
+                            raise SystemExit(f'Could not turn value "{price_str}"')
                     results[grade_level] = price
 
     return results
@@ -66,28 +74,30 @@ def results_to_dataframe(results: Dict[str, Dict[str, float]]) -> pd.DataFrame:
         all_series.append(s)
 
     df = pd.DataFrame(data=all_series)
-    df.index.name = 'Pokemon'
+    df.index.name = "Pokemon"
     return df
 
 
 def pokemon_prices_to_excel(pokemon_prices: pd.DataFrame):
     date_time_stamp = datetime.today().isoformat(sep="-", timespec="seconds")
-    writer = pd.ExcelWriter(f"Pokemon-Prices-{date_time_stamp}.xlsx", engine="xlsxwriter")
-    pokemon_prices.to_excel(writer, sheet_name='Prices')
+    writer = pd.ExcelWriter(
+        f"Pokemon-Prices-{date_time_stamp}.xlsx", engine="xlsxwriter"
+    )
+    pokemon_prices.to_excel(writer, sheet_name="Prices")
     wb = writer.book
-    ws = writer.sheets['Prices']
-    money_fmt = wb.add_format({'num_format': '$#,##0.00'})
-    label_fmt = wb.add_format({'border': 2, 'bold': True})
-    label_fmt.set_align('vcenter')
-    label_fmt.set_align('center')
+    ws = writer.sheets["Prices"]
+    money_fmt = wb.add_format({"num_format": "$#,##0.00"})
+    label_fmt = wb.add_format({"border": 2, "bold": True})
+    label_fmt.set_align("vcenter")
+    label_fmt.set_align("center")
     columns = pokemon_prices.columns
-    letters = list('BCDEFG')
-    ws.write('A1', 'Pokemon', label_fmt)
+    letters = list("BCDEFG")
+    ws.write("A1", "Pokemon", label_fmt)
     for index, column in enumerate(columns):
-        coords = f'{letters[index]}1'
+        coords = f"{letters[index]}1"
         ws.write(coords, column, label_fmt)
-    ws.set_column('B:G', 12, money_fmt)
-    ws.set_column('A:A', max([len(name) for name in pokemon_prices.index]))
+    ws.set_column("B:G", 12, money_fmt)
+    ws.set_column("A:A", max([len(name) for name in pokemon_prices.index]))
     writer.close()
 
 
