@@ -21,6 +21,7 @@ def get_url_data(filename: str = "urls.yaml"):
 
 def get_url(url: str):
     try:
+        print(f'Scraping URL: {url}')
         req = requests.get(url)
         req.raise_for_status()
         return req.text
