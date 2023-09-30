@@ -72,6 +72,7 @@ These pages from PSA helped me learn about card grading:
 - https://blog.psacard.com/2020/09/17/declared-value-is-easy-to-determine/
 
 I found these sites helpful when making this tool:
+- https://www.crummy.com/software/BeautifulSoup/bs4/doc/#find
 - https://tedboy.github.io/bs4_doc/generated/generated/bs4.NavigableString.html
 - https://stackoverflow.com/questions/5041008/how-to-find-elements-by-class
 - https://stackoverflow.com/questions/6287529/how-to-find-children-of-nodes-using-beautifulsoup
