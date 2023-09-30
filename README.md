@@ -1,7 +1,7 @@
 # Price Sharting
 
 A simple web scraper to make an Excel spreadsheet of Pokemon card values.
-<img src="https://github.com/bxbrenden/price_sharting/blob/main/spreadsheet-example.png" width="450px" title="Spreadsheet Example">
+<img src="https://github.com/bxbrenden/price_sharting/blob/main/spreadsheet-example.png" width="650px" title="Spreadsheet Example">
 
 
 ## Prerequisites
